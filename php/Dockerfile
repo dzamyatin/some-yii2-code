@@ -39,15 +39,39 @@ RUN cd php-8.1.13 && \
     --enable-fpm \
     --with-fpm-user=root \
     -with-zip \
+    --with-config-file-path=/usr/local/lib \
+    --with-config-file-scan-dir=/usr/local/lib \
      && \
     make -j4 && \
     make install
 
 COPY ./php/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY ./php/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./php/php.ini /usr/local/lib/php.ini
 
 COPY ./backend /www
 
+RUN curl https://xdebug.org/files/xdebug-3.2.2.tgz --output xdebug && \
+    tar -xvzf xdebug && \
+    cd xdebug-3.2.2 && \
+    phpize && \
+    ./configure --enable-xdebug && \
+    make && \
+    make install
+
+ARG UID=1000
+ARG GID=1000
+
+RUN groupadd -g "${GID}" user \
+  && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" user
+
+RUN mkdir -p user && \
+    chown -R user:user user && \
+    chmod -R 750 user
+
+USER user
+
 WORKDIR /www
 
-CMD php-fpm -R
+#CMD php-fpm -R -F
+CMD php-fpm -F

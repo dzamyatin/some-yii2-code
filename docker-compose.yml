@@ -21,8 +21,13 @@ services:
   php-fpm:
     restart: always
     container_name: ${PROJECT_NAME}-php-fpm
+    environment:
+      PHP_IDE_CONFIG: serverName=yii2
     volumes:
       - ./backend:/www
+      - ./php/xdebug.ini:/usr/local/lib/xdebug.ini
+      - ./php/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
     networks:
       app:
         aliases:

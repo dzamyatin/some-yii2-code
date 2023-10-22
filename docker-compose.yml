@@ -40,6 +40,8 @@ services:
     restart: always
     image: mysql:8.1
     container_name: ${PROJECT_NAME}-mysql
+    ports:
+      - "${MYSQL_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: secret-hello123
       MYSQL_PASSWORD: secret-hello123

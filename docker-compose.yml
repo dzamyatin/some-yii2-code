@@ -36,6 +36,17 @@ services:
     build:
       context: ./
       dockerfile: ./php/Dockerfile
+  mysql:
+    restart: always
+    image: mysql:8.1
+    container_name: ${PROJECT_NAME}-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret-hello123
+      MYSQL_PASSWORD: secret-hello123
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+    volumes:
+      - ./mysql/data:/var/lib/mysql
 networks:
   app:
     name: "${PROJECT_NAME}-app"

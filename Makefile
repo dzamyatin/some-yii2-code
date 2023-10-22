@@ -28,9 +28,7 @@ cert:
 authority:
 	sudo sh -c "rm -f /usr/local/share/ca-certificates/${PROJECT_NAME}-local*.crt | cp ./nginx/cert.pem /usr/local/share/ca-certificates/${PROJECT_NAME}-local`date +%s`.crt && update-ca-certificates"
 composer:
-	docker exec -ti ${PROJECT_NAME}-php-fpm sh -c "cd / && php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\" \
+	docker exec -ti ${PROJECT_NAME}-php-fpm sh -c "cd /user && php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\" \
 && php composer-setup.php && php -r \"unlink('composer-setup.php');\"; \
-apt-get update && \
-apt install -y git && \
 cd /www && \
-php ../composer.phar $(ARGS)"
+php /user/composer.phar $(ARGS)"

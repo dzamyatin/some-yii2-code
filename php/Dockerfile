@@ -5,6 +5,7 @@ USER root
 RUN apt-get update -y; \
     printf "8\n34" | apt-get install -y tzdata; \
     apt-get install -y \
+    git \
     wget \
     libonig-dev \
     unzip \

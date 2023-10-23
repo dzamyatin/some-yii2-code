@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Blog\Domain\Entity;
+namespace App\Blog\Application\Command;
 
-final class Post
+use App\Shared\ValueObject\UserToken;
+
+final class PostCreateCommand
 {
     public function __construct(
-        private string $uid,
-        private string $userUid,
+        private string $userToken,
         private string $header,
         private string $text
     ) {}
@@ -15,17 +16,9 @@ final class Post
     /**
      * @return string
      */
-    public function getUid(): string
+    public function getUserToken(): string
     {
-        return $this->uid;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserUid(): string
-    {
-        return $this->userUid;
+        return $this->userToken;
     }
 
     /**

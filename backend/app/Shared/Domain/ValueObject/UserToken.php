@@ -5,7 +5,6 @@ namespace App\Shared\ValueObject;
 
 final class UserToken
 {
-    public function __construct()
-    {
-    }
+    public function __construct(public readonly string $userUid)
+    {}
 }

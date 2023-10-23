@@ -5,6 +5,6 @@ namespace App\Shared\Application\Query;
 
 use Exception;
 
-final class UserTokenProducerException extends Exception
+final class UserTokenProduceException extends Exception
 {
 }

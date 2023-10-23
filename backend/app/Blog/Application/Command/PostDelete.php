@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Blog\Application\Command;
 
-use App\Blog\Application\Command\Exception\PostUpdateException;
+use App\Blog\Application\Exception\PostUpdateException;
 use App\Blog\Domain\Repository\PostRepositoryInterface;
 use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
 use App\Shared\Domain\Repository\UserTokenRepositoryException;

@@ -37,6 +37,10 @@ services:
       context: ./
       dockerfile: ./php/Dockerfile
   mysql:
+    networks:
+      app:
+        aliases:
+          - mysql
     restart: always
     image: mysql:8.1
     container_name: ${PROJECT_NAME}-mysql

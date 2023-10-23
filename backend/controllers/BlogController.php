@@ -13,6 +13,30 @@ class BlogController extends Controller
      */
     public function actionIndex()
     {
-        return 'hello!';
+        return 'list!';
+    }
+
+    /**
+     * @return string
+     */
+    public function actionCreate()
+    {
+        return 'create!';
+    }
+
+    /**
+     * @return string
+     */
+    public function actionUpdate()
+    {
+        return 'update!';
+    }
+
+    /**
+     * @return string
+     */
+    public function actionDelete()
+    {
+        return 'delete!';
     }
 }

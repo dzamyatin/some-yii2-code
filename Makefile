@@ -7,6 +7,7 @@ dev:
 	make build
 	make up
 	ARGS=install make composer
+	make migrate
 up:
 	docker-compose -f ./docker-compose.yml up -d --remove-orphans
 	echo "\n\n\n-------------\n Ready to serve connection by `cat ./.env | grep SSL_EXTERNAL_PORT | sed --expression='s/SSL_EXTERNAL_PORT=//g'` \n-------------\n"
@@ -14,6 +15,8 @@ down:
 	docker-compose -f ./docker-compose.yml down
 build:
 	docker-compose -f ./docker-compose.yml build
+migrate:
+	docker exec -ti ${PROJECT_NAME}-php-fpm sh -c "php -f yii migrate/up --interactive 0"
 dphp:
 	docker exec -ti ${PROJECT_NAME}-php-fpm bash
 dnginx:

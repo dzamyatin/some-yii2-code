@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Blog\Application\Command;
 
-use App\Shared\ValueObject\UserToken;
-
 final class PostCreateCommand
 {
     public function __construct(

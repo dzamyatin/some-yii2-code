@@ -1,5 +1,26 @@
 <?php
 
+use App\Blog\Application\Command\PostCreate;
+use App\Blog\Application\Command\PostDelete;
+use App\Blog\Application\Command\PostUpdate;
+use App\Blog\Application\Query\PostsShow;
+use App\Blog\Domain\Repository\PostRepositoryInterface;
+use App\Blog\Infrastructure\Repository\PostRepository;
+use App\Blog\Ui\BlogApi;
+use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
+use App\Shared\Domain\Repository\UuidRepositoryInterface;
+use App\Shared\Infrastructure\Repository\UserTokenRepository;
+use App\Shared\Infrastructure\Repository\UuidRepository;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -50,6 +71,55 @@ $config = [
         ],
     ],
     'params' => $params,
+    'container' => [
+        'singletons' => [
+            //Serializer
+            SerializerInterface::class => static fn() => new Serializer(
+                [
+                    new GetSetMethodNormalizer(),
+                    new ArrayDenormalizer(),
+                    new PropertyNormalizer(),
+                    new JsonSerializableNormalizer()
+                ],
+                [
+                    new JsonEncoder()
+                ]
+            ),
+            NormalizerInterface::class => SerializerInterface::class,
+            DenormalizerInterface::class => SerializerInterface::class,
+
+            //Repositories
+            PostRepositoryInterface::class => static fn() => new PostRepository(),
+            UuidRepositoryInterface::class => static fn() => new UuidRepository(),
+            UserTokenRepositoryInterface::class => static fn() => new UserTokenRepository(),
+
+            //Command
+            PostsShow::class => static fn() => new PostsShow(
+                Yii::$container->get(PostRepositoryInterface::class)
+            ),
+            PostCreate::class => static fn() => new PostCreate(
+                Yii::$container->get(PostRepositoryInterface::class),
+                Yii::$container->get(UuidRepositoryInterface::class),
+                Yii::$container->get(UserTokenRepositoryInterface::class),
+            ),
+            PostDelete::class => static fn() => new PostDelete(
+                Yii::$container->get(PostRepositoryInterface::class),
+                Yii::$container->get(UserTokenRepositoryInterface::class),
+            ),
+            PostUpdate::class => static fn() => new PostUpdate(
+                Yii::$container->get(PostRepositoryInterface::class),
+                Yii::$container->get(UserTokenRepositoryInterface::class),
+            ),
+
+            //Ui
+            BlogApi::class => static fn() => new BlogApi(
+                Yii::$container->get(PostCreate::class),
+                Yii::$container->get(PostDelete::class),
+                Yii::$container->get(PostUpdate::class),
+                Yii::$container->get(PostsShow::class),
+            ),
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

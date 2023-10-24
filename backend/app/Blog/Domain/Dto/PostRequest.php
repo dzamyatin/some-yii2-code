@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Blog\Domain\Repositories;
+namespace App\Blog\Domain\Dto;
 
 final class PostRequest
 {

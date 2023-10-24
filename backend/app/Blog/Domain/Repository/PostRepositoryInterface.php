@@ -2,8 +2,8 @@
 
 namespace App\Blog\Domain\Repository;
 
+use App\Blog\Domain\Dto\PostRequest;
 use App\Blog\Domain\Entity\Post;
-use App\Blog\Domain\Repositories\PostRequest;
 
 interface PostRepositoryInterface
 {

@@ -5,7 +5,7 @@ namespace App\Blog\Application\Query;
 
 use App\Blog\Domain\Entity\Post;
 
-final class ShowPostsResponse
+final class PostsShowResult
 {
     /**
      * @param Post[] $posts

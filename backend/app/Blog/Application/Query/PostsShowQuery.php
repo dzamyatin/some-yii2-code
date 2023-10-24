@@ -5,7 +5,7 @@ namespace App\Blog\Application\Query;
 
 use App\Blog\Domain\Repository\PostRepositoryInterface;
 
-final class ShowPostsQuery
+final class PostsShowQuery
 {
     public function __construct(public readonly int $offset, public readonly int $limit)
     {}

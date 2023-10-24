@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Shared\Domain\Repository;
 
 use App\Shared\Domain\User;
-use App\Shared\ValueObject\UserToken;
+use App\Shared\Domain\ValueObject\UserToken;
 
 interface UserTokenRepositoryInterface
 {

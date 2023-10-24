@@ -2,41 +2,86 @@
 
 namespace app\controllers;
 
-use Yii;
+use App\Blog\Ui\BlogApi;
+use App\Blog\Ui\Request\PostCreateRequest;
+use App\Blog\Ui\Request\PostDeleteRequest;
+use App\Blog\Ui\Request\PostsShowRequest;
+use App\Blog\Ui\Request\PostUpdateRequest;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use yii\web\Controller;
+use yii\web\Request;
 use yii\web\Response;
 
 class BlogController extends Controller
 {
-    /**
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return 'list!';
+    public $enableCsrfValidation = false;
+
+    public function __construct(
+        $id,
+        $module,
+        private BlogApi $blogApi,
+        private NormalizerInterface $normalizer,
+        $config = [],
+    ) {
+        parent::__construct($id, $module);
     }
 
-    /**
-     * @return string
-     */
-    public function actionCreate()
+    public function actionIndex(Request $request): Response
     {
-        return 'create!';
+        return $this->asJson(
+            $this->normalizer->normalize(
+                $this->blogApi->postsShow(
+                    new PostsShowRequest(
+                        (int) $request->get('offset', 0),
+                        (int) $request->get('offset', 10)
+                    )
+                )
+            )
+        );
     }
 
-    /**
-     * @return string
-     */
-    public function actionUpdate()
+    public function actionCreate(Request $request): Response
     {
-        return 'update!';
+        $body = json_decode($request->getRawBody(), true);
+
+        $this->blogApi->postCreate(
+            new PostCreateRequest(
+                $request->getHeaders()['Authorization'] ?? '',
+                $body['header'] ?? '',
+                $body['text'] ?? '',
+            )
+        );
+
+        return (new Response())->setStatusCode(201);
     }
 
-    /**
-     * @return string
-     */
-    public function actionDelete()
+    public function actionUpdate(Request $request): Response
     {
-        return 'delete!';
+        $body = json_decode($request->getRawBody(), true);
+
+        $this->blogApi->postUpdate(
+            new PostUpdateRequest(
+                $request->getHeaders()['Authorization'] ?? '',
+                $body['postUid'],
+                $body['header'],
+                $body['text'],
+            )
+        );
+
+        return new Response();
+    }
+
+    public function actionDelete(Request $request): Response
+    {
+        $body = json_decode($request->getRawBody(), true);
+
+        $this->blogApi->postDelete(
+            new PostDeleteRequest(
+                $request->getHeaders()['Authorization'] ?? '',
+                $body['postUid'],
+            )
+        );
+
+        return new Response();
     }
 }

@@ -5,8 +5,8 @@ namespace App\Blog\Application\Command;
 
 use App\Blog\Domain\Entity\Post;
 use App\Blog\Domain\Repository\PostRepositoryInterface;
-use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\Domain\Repository\UuidRepositoryInterface;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
+use App\Shared\User\Domain\Repository\UuidRepositoryInterface;
 
 final class PostCreate
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Shared\Infrastructure\Repository;
+namespace App\Shared\User\Infrastructure\Repository;
 
-use App\Shared\Domain\Repository\UserRepositoryInterface;
-use App\Shared\Domain\User;
+use App\Shared\User\Domain\Repository\UserRepositoryInterface;
+use App\Shared\User\Domain\User;
 
 class UserRepository implements UserRepositoryInterface
 {

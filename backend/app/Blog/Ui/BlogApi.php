@@ -18,7 +18,11 @@ use App\Blog\UI\Request\PostsShowRequest;
 use App\Blog\Ui\Request\PostUpdateRequest;
 use App\Blog\Ui\Response\PostResponse;
 use App\Blog\Ui\Response\PostsShowResponse;
+use OpenApi\Attributes as OA;
 
+
+#[OA\Info(title: "Blog", version: "0.0.1")]
+#[OA\PathItem(path: "/")]
 class BlogApi
 {
     public function __construct(
@@ -28,6 +32,12 @@ class BlogApi
         private PostsShow $postsShow
     ) {}
 
+    #[
+        OA\Get(
+            path: '/blog/index',
+            responses: [new OA\Response(response: 200, description: 'tst')]
+        )
+    ]
     public function postsShow(PostsShowRequest $postsShowRequest): PostsShowResponse
     {
         return new PostsShowResponse(

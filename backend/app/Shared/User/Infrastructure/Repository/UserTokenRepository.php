@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\Repository;
+namespace App\Shared\User\Infrastructure\Repository;
 
-use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\Domain\User;
-use App\Shared\Domain\ValueObject\UserToken;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
+use App\Shared\User\Domain\User;
+use App\Shared\User\Domain\ValueObject\UserToken;
 
 class UserTokenRepository implements UserTokenRepositoryInterface
 {

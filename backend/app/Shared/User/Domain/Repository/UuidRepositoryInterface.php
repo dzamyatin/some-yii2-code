@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Domain\Repository;
+namespace App\Shared\User\Domain\Repository;
 
 interface UuidRepositoryInterface
 {

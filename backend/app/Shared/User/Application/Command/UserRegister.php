@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Shared\Application\Command;
+namespace App\Shared\User\Application\Command;
 
-use App\Shared\Domain\Repository\UserRepositoryInterface;
-use App\Shared\Domain\Repository\UuidRepositoryInterface;
-use App\Shared\Domain\User;
+use App\Shared\User\Domain\Repository\UserRepositoryInterface;
+use App\Shared\User\Domain\Repository\UuidRepositoryInterface;
+use App\Shared\User\Domain\User;
 
 final class UserRegister
 {

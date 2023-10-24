@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Shared\Application\Query;
+namespace App\Shared\User\Application\Query;
 
-use App\Shared\Domain\Repository\PasswordRepositoryInterface;
-use App\Shared\Domain\Repository\UserRepositoryInterface;
-use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\ValueObject\UserToken;
+use App\Shared\User\Domain\Repository\PasswordRepositoryInterface;
+use App\Shared\User\Domain\Repository\UserRepositoryInterface;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
+use App\Shared\User\ValueObject\UserToken;
 
 final class UserTokenProduce
 {

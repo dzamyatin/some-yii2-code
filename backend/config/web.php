@@ -7,10 +7,11 @@ use App\Blog\Application\Query\PostsShow;
 use App\Blog\Domain\Repository\PostRepositoryInterface;
 use App\Blog\Infrastructure\Repository\PostRepository;
 use App\Blog\Ui\BlogApi;
-use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\Domain\Repository\UuidRepositoryInterface;
-use App\Shared\Infrastructure\Repository\UserTokenRepository;
-use App\Shared\Infrastructure\Repository\UuidRepository;
+use App\Shared\Doc\OpenApiService;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
+use App\Shared\User\Domain\Repository\UuidRepositoryInterface;
+use App\Shared\User\Infrastructure\Repository\UserTokenRepository;
+use App\Shared\User\Infrastructure\Repository\UuidRepository;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -73,6 +74,12 @@ $config = [
     'params' => $params,
     'container' => [
         'singletons' => [
+            OpenApiService::class => static fn() =>  new OpenApiService(
+                [
+                    __DIR__ . '/../app/Blog/Ui'
+                ]
+            ),
+
             //Serializer
             SerializerInterface::class => static fn() => new Serializer(
                 [

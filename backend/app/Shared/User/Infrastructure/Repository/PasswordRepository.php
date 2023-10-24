@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Shared\Infrastructure\Repository;
+namespace App\Shared\User\Infrastructure\Repository;
 
-use App\Shared\Domain\Repository\PasswordRepositoryInterface;
+use App\Shared\User\Domain\Repository\PasswordRepositoryInterface;
 
 class PasswordRepository implements PasswordRepositoryInterface
 {

@@ -62,9 +62,9 @@ class BlogController extends Controller
         $this->blogApi->postUpdate(
             new PostUpdateRequest(
                 $request->getHeaders()['Authorization'] ?? '',
-                $body['postUid'],
-                $body['header'],
-                $body['text'],
+                $body['postUid'] ?? '',
+                $body['header'] ?? '',
+                $body['text'] ?? '',
             )
         );
 
@@ -78,7 +78,7 @@ class BlogController extends Controller
         $this->blogApi->postDelete(
             new PostDeleteRequest(
                 $request->getHeaders()['Authorization'] ?? '',
-                $body['postUid'],
+                $body['postUid'] ?? '',
             )
         );
 

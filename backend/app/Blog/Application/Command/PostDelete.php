@@ -5,8 +5,8 @@ namespace App\Blog\Application\Command;
 
 use App\Blog\Application\Exception\PostUpdateException;
 use App\Blog\Domain\Repository\PostRepositoryInterface;
-use App\Shared\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\Domain\Repository\UserTokenRepositoryException;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryException;
 
 final class PostDelete
 {

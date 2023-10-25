@@ -6,7 +6,6 @@ namespace App\Shared\User\Application\Query;
 use App\Shared\User\Domain\Repository\PasswordRepositoryInterface;
 use App\Shared\User\Domain\Repository\UserRepositoryInterface;
 use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\User\ValueObject\UserToken;
 
 final class UserTokenProduce
 {
@@ -19,13 +18,13 @@ final class UserTokenProduce
     /**
      * @throws UserTokenProduceException
      */
-    public function produce(UserTokenProduceQuery $producerQuery): UserToken
+    public function produce(UserTokenProduceQuery $produceQuery): string
     {
-        $user = $this->userRepository->getUserByLogin($producerQuery->login);
+        $user = $this->userRepository->getUserByLogin($produceQuery->login);
 
         if (
             is_null($user) ||
-            $this->passwordRepository->encode($producerQuery->password) !== $user->getPassword()
+            $this->passwordRepository->encode($produceQuery->password) !== $user->getPassword()
         ) {
             throw new UserTokenProduceException('There is no such user or the password is incorrect');
         }

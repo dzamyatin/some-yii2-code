@@ -20,9 +20,22 @@ use App\Blog\Ui\Response\PostResponse;
 use App\Blog\Ui\Response\PostsShowResponse;
 use OpenApi\Attributes as OA;
 
-
-#[OA\Info(title: "Blog", version: "0.0.1")]
-#[OA\PathItem(path: "/")]
+#[OA\Info(version: "0.0.1", title: "Blog")]
+#[OA\Server(url: 'https://localhost:8443')]
+#[
+    OA\SecurityScheme(
+        securityScheme: 'user_auth',
+        type: 'oauth2',
+        flows: [
+            new OA\Flow(
+                tokenUrl: '/user/token',
+                refreshUrl: '/user/refresh',
+                flow: 'clientCredentials',
+                scopes: [],
+            )
+        ],
+    )
+]
 class BlogApi
 {
     public function __construct(
@@ -34,8 +47,34 @@ class BlogApi
 
     #[
         OA\Get(
-            path: '/blog/index',
-            responses: [new OA\Response(response: 200, description: 'tst')]
+            path: '/blog',
+            description: 'Show all posts',
+            tags: ['Blog'],
+            parameters: [
+                new OA\Parameter(
+                    name: 'offset',
+                    in: 'query',
+                    required: true,
+                    schema: new OA\Schema(type: 'number'),
+                    example: 0,
+                ),
+                new OA\Parameter(
+                    name: 'limit',
+                    in: 'query',
+                    required: true,
+                    schema: new OA\Schema(type: 'number'),
+                    example: 10,
+                ),
+            ],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Success',
+                    content: new OA\JsonContent(
+                        ref: '#/components/schemas/PostsShowResponse'
+                    ),
+                ),
+            ],
         )
     ]
     public function postsShow(PostsShowRequest $postsShowRequest): PostsShowResponse
@@ -50,6 +89,25 @@ class BlogApi
         );
     }
 
+    #[
+        OA\Post(
+            path: '/blog',
+            description: 'Create post',
+            security: [
+                ['user_auth' => []]
+            ],
+            requestBody: new OA\RequestBody(
+                content: new OA\JsonContent(ref: '#/components/schemas/PostCreateRequest')
+            ),
+            tags: ['Blog'],
+            responses: [
+                new OA\Response(
+                    response: 201,
+                    description: 'Success',
+                ),
+            ],
+        )
+    ]
     public function postCreate(PostCreateRequest $postCreateRequest): void
     {
         $this->postCreate->__invoke(
@@ -61,6 +119,28 @@ class BlogApi
         );
     }
 
+    #[
+        OA\Put(
+            path: '/blog/{postUid}',
+            description: 'Update post',
+            security: [
+                ['user_auth' => []]
+            ],
+            requestBody: new OA\RequestBody(
+                content: new OA\JsonContent(ref: '#/components/schemas/PostUpdateRequest')
+            ),
+            tags: ['Blog'],
+            parameters: [
+                new OA\Parameter(name: 'postUid', in: 'path', schema: new OA\Schema(type: 'string')),
+            ],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Success',
+                ),
+            ],
+        )
+    ]
     public function postUpdate(PostUpdateRequest $postUpdateRequest): void
     {
         $this->postUpdate->__invoke(
@@ -73,6 +153,25 @@ class BlogApi
         );
     }
 
+    #[
+        OA\Delete(
+            path: '/blog/{postUid}',
+            description: 'Delete post',
+            security: [
+                ['user_auth' => []]
+            ],
+            tags: ['Blog'],
+            parameters: [
+                new OA\Parameter(name: 'postUid', in: 'path', schema: new OA\Schema(type: 'string')),
+            ],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Success',
+                ),
+            ],
+        )
+    ]
     public function postDelete(PostDeleteRequest $postDeleteRequest): void
     {
         $this->postDelete->__invoke(

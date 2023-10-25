@@ -18,7 +18,7 @@ final class UserTokenRefresh
     /**
      * @throws UserTokenRefreshException|UserTokenRepositoryException
      */
-    public function produce(UserTokenRefreshQuery $producerQuery): UserToken
+    public function produce(UserTokenRefreshQuery $producerQuery): string
     {
         $token = $this->tokenRepository->decodeToken($producerQuery->userToken);
 

@@ -9,9 +9,9 @@ use App\Shared\User\Domain\ValueObject\UserToken;
 
 class UserTokenRepository implements UserTokenRepositoryInterface
 {
-    public function makeToken(User $user): UserToken
+    public function makeToken(User $user): string
     {
-        return new UserToken('');
+        return '';
     }
 
     public function checkRefreshToken(UserToken $token): bool

@@ -6,7 +6,7 @@ namespace App\Shared\User\Application\Command;
 final class UserRegisterCommand
 {
     public function __construct(
-        public readonly string $name,
+        public readonly string $login,
         public readonly string $password
     ) {}
 }

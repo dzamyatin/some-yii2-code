@@ -8,10 +8,18 @@ use App\Blog\Domain\Repository\PostRepositoryInterface;
 use App\Blog\Infrastructure\Repository\PostRepository;
 use App\Blog\Ui\BlogApi;
 use App\Shared\Doc\OpenApiService;
+use App\Shared\User\Application\Command\UserRegister;
+use App\Shared\User\Application\Query\UserTokenProduce;
+use App\Shared\User\Application\Query\UserTokenRefresh;
+use App\Shared\User\Domain\Repository\PasswordRepositoryInterface;
+use App\Shared\User\Domain\Repository\UserRepositoryInterface;
 use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
 use App\Shared\User\Domain\Repository\UuidRepositoryInterface;
+use App\Shared\User\Infrastructure\Repository\PasswordRepository;
+use App\Shared\User\Infrastructure\Repository\UserRepository;
 use App\Shared\User\Infrastructure\Repository\UserTokenRepository;
 use App\Shared\User\Infrastructure\Repository\UuidRepository;
+use App\Shared\User\Ui\UserApi;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -68,6 +76,14 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST user/register' => 'user/register',
+                'POST user/token' => 'user/token',
+                'POST user/refresh' => 'user/refresh',
+
+                'GET blog' => 'blog/index',
+                'POST blog' => 'blog/create',
+                'PUT blog/<uid>' => 'blog/update',
+                'DELETE blog/<uid>' => 'blog/delete',
             ],
         ],
     ],
@@ -99,6 +115,8 @@ $config = [
             PostRepositoryInterface::class => static fn() => new PostRepository(),
             UuidRepositoryInterface::class => static fn() => new UuidRepository(),
             UserTokenRepositoryInterface::class => static fn() => new UserTokenRepository(),
+            UserRepositoryInterface::class => static fn() => new UserRepository(),
+            PasswordRepositoryInterface::class => static fn() => new PasswordRepository(),
 
             //Command
             PostsShow::class => static fn() => new PostsShow(
@@ -117,6 +135,19 @@ $config = [
                 Yii::$container->get(PostRepositoryInterface::class),
                 Yii::$container->get(UserTokenRepositoryInterface::class),
             ),
+            UserRegister::class => static fn() => new UserRegister(
+                Yii::$container->get(UserRepositoryInterface::class),
+                Yii::$container->get(UuidRepositoryInterface::class)
+            ),
+            UserTokenProduce::class => static fn() => new UserTokenProduce(
+                Yii::$container->get(UserRepositoryInterface::class),
+                Yii::$container->get(UserTokenRepositoryInterface::class),
+                Yii::$container->get(PasswordRepositoryInterface::class),
+            ),
+            UserTokenRefresh::class => static fn() => new UserTokenRefresh(
+                Yii::$container->get(UserRepositoryInterface::class),
+                Yii::$container->get(UserTokenRepositoryInterface::class),
+            ),
 
             //Ui
             BlogApi::class => static fn() => new BlogApi(
@@ -124,6 +155,11 @@ $config = [
                 Yii::$container->get(PostDelete::class),
                 Yii::$container->get(PostUpdate::class),
                 Yii::$container->get(PostsShow::class),
+            ),
+            UserApi::class => static fn() => new UserApi(
+                Yii::$container->get(UserRegister::class),
+                Yii::$container->get(UserTokenProduce::class),
+                Yii::$container->get(UserTokenRefresh::class),
             ),
         ],
     ],

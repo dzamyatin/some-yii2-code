@@ -18,7 +18,7 @@ final class UserRegister
     {
         $user = new User(
             $this->uuidRepository->create(),
-            $userRegisterCommand->name,
+            $userRegisterCommand->login,
             $userRegisterCommand->password
         );
 

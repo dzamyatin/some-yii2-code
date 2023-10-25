@@ -8,7 +8,7 @@ use App\Shared\User\Domain\ValueObject\UserToken;
 
 interface UserTokenRepositoryInterface
 {
-    public function makeToken(User $user): UserToken;
+    public function makeToken(User $user): string;
 
     public function checkRefreshToken(UserToken $token): bool;
 

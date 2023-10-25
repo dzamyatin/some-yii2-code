@@ -3,9 +3,7 @@
 namespace app\controllers;
 
 use App\Shared\Doc\OpenApiService;
-use Yii;
 use yii\web\Controller;
-use yii\web\Response;
 
 class DocController extends Controller
 {

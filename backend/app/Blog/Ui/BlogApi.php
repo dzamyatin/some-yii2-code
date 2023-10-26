@@ -9,6 +9,8 @@ use App\Blog\Application\Command\PostDelete;
 use App\Blog\Application\Command\PostDeleteCommand;
 use App\Blog\Application\Command\PostUpdate;
 use App\Blog\Application\Command\PostUpdateCommand;
+use App\Blog\Application\Exception\PostUpdateException;
+use App\Blog\Application\Exception\PostUpdatePostNotFoundException;
 use App\Blog\Application\Query\PostsShow;
 use App\Blog\Application\Query\PostsShowQuery;
 use App\Blog\Domain\Entity\Post;
@@ -18,6 +20,10 @@ use App\Blog\UI\Request\PostsShowRequest;
 use App\Blog\Ui\Request\PostUpdateRequest;
 use App\Blog\Ui\Response\PostResponse;
 use App\Blog\Ui\Response\PostsShowResponse;
+use App\Shared\Common\Ui\Response\ForbiddenResponseException;
+use App\Shared\Common\Ui\Response\NotFoundResponseException;
+use App\Shared\Common\Ui\Response\UnauthorizedResponseException;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryException;
 use OpenApi\Attributes as OA;
 
 #[OA\Info(version: "0.0.1", title: "Blog")]
@@ -105,18 +111,29 @@ class BlogApi
                     response: 201,
                     description: 'Success',
                 ),
+                new OA\Response(
+                    response: 401,
+                    description: 'Unauthorized',
+                ),
             ],
         )
     ]
+    /**
+     * @throws UnauthorizedResponseException
+     */
     public function postCreate(PostCreateRequest $postCreateRequest): void
     {
-        $this->postCreate->__invoke(
-            new PostCreateCommand(
-                $postCreateRequest->userToken,
-                $postCreateRequest->header,
-                $postCreateRequest->text
-            )
-        );
+        try {
+            $this->postCreate->__invoke(
+                new PostCreateCommand(
+                    $postCreateRequest->userToken,
+                    $postCreateRequest->header,
+                    $postCreateRequest->text
+                )
+            );
+        } catch (UserTokenRepositoryException $exception) {
+            throw new UnauthorizedResponseException($exception->getMessage(), $exception);
+        }
     }
 
     #[
@@ -138,19 +155,38 @@ class BlogApi
                     response: 200,
                     description: 'Success',
                 ),
+                new OA\Response(
+                    response: 403,
+                    description: 'Forbidden',
+                ),
+                new OA\Response(
+                    response: 401,
+                    description: 'Unauthorized',
+                ),
             ],
         )
     ]
+    /**
+     * @throws NotFoundResponseException|ForbiddenResponseException|UnauthorizedResponseException
+     */
     public function postUpdate(PostUpdateRequest $postUpdateRequest): void
     {
-        $this->postUpdate->__invoke(
-            new PostUpdateCommand(
-                $postUpdateRequest->userToken,
-                $postUpdateRequest->postUid,
-                $postUpdateRequest->header,
-                $postUpdateRequest->text
-            )
-        );
+        try {
+            $this->postUpdate->__invoke(
+                new PostUpdateCommand(
+                    $postUpdateRequest->userToken,
+                    $postUpdateRequest->postUid,
+                    $postUpdateRequest->header,
+                    $postUpdateRequest->text
+                )
+            );
+        } catch (PostUpdatePostNotFoundException $exception) {
+            throw new NotFoundResponseException($exception->getMessage(), $exception);
+        } catch (PostUpdateException $exception) {
+            throw new ForbiddenResponseException($exception->getMessage(), $exception);
+        } catch (UserTokenRepositoryException $exception) {
+            throw new UnauthorizedResponseException($exception->getMessage(), $exception);
+        }
     }
 
     #[
@@ -169,16 +205,33 @@ class BlogApi
                     response: 200,
                     description: 'Success',
                 ),
+                new OA\Response(
+                    response: 403,
+                    description: 'Forbidden',
+                ),
+                new OA\Response(
+                    response: 401,
+                    description: 'Unauthorized',
+                ),
             ],
         )
     ]
+    /**
+     * @throws ForbiddenResponseException|UnauthorizedResponseException
+     */
     public function postDelete(PostDeleteRequest $postDeleteRequest): void
     {
-        $this->postDelete->__invoke(
-            new PostDeleteCommand(
-                $postDeleteRequest->userToken,
-                $postDeleteRequest->postUid
-            )
-        );
+        try {
+            $this->postDelete->__invoke(
+                new PostDeleteCommand(
+                    $postDeleteRequest->userToken,
+                    $postDeleteRequest->postUid
+                )
+            );
+        } catch (PostUpdateException $exception) {
+            throw new ForbiddenResponseException($exception->getMessage(), $exception);
+        } catch (UserTokenRepositoryException $exception) {
+            throw new UnauthorizedResponseException($exception->getMessage(), $exception);
+        }
     }
 }

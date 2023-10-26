@@ -5,7 +5,7 @@ namespace App\Shared\User\Application\Command;
 
 use App\Shared\User\Domain\Repository\UserRepositoryInterface;
 use App\Shared\User\Domain\Repository\UuidRepositoryInterface;
-use App\Shared\User\Domain\User;
+use App\Shared\User\Domain\Entity\User;
 
 final class UserRegister
 {

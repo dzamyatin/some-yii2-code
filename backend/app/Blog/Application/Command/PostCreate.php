@@ -7,6 +7,7 @@ use App\Blog\Domain\Entity\Post;
 use App\Blog\Domain\Repository\PostRepositoryInterface;
 use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
 use App\Shared\User\Domain\Repository\UuidRepositoryInterface;
+use App\Shared\User\Domain\Repository\UserTokenRepositoryException;
 
 final class PostCreate
 {
@@ -16,6 +17,9 @@ final class PostCreate
         private UserTokenRepositoryInterface $tokenRepository
     ) {}
 
+    /**
+     * @throws UserTokenRepositoryException
+     */
     public function __invoke(PostCreateCommand $postCreateCommand)
     {
         $token = $this->tokenRepository->decodeToken($postCreateCommand->getUserToken());

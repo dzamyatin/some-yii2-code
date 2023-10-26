@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Shared\User\Domain;
+namespace App\Shared\User\Domain\Entity;
 
 final class User
 {

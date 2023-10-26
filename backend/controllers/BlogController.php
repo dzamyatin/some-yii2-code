@@ -21,9 +21,10 @@ class BlogController extends Controller
         $module,
         private BlogApi $blogApi,
         private NormalizerInterface $normalizer,
+        private TokenFromRequestExtractor $tokenFromRequestExtractor,
         $config = [],
     ) {
-        parent::__construct($id, $module);
+        parent::__construct($id, $module, $config);
     }
 
     public function actionIndex(Request $request): Response
@@ -46,9 +47,9 @@ class BlogController extends Controller
 
         $this->blogApi->postCreate(
             new PostCreateRequest(
-                $request->getHeaders()['Authorization'] ?? '',
-                $body['header'] ?? '',
-                $body['text'] ?? '',
+                $this->tokenFromRequestExtractor->extract($request),
+                (string) ($body['header'] ?? ''),
+                (string) ($body['text'] ?? ''),
             )
         );
 
@@ -61,10 +62,10 @@ class BlogController extends Controller
 
         $this->blogApi->postUpdate(
             new PostUpdateRequest(
-                $request->getHeaders()['Authorization'] ?? '',
-                $body['postUid'] ?? '',
-                $body['header'] ?? '',
-                $body['text'] ?? '',
+                $this->tokenFromRequestExtractor->extract($request),
+                (string) ($body['postUid'] ?? ''),
+                (string) ($body['header'] ?? ''),
+                (string) ($body['text'] ?? ''),
             )
         );
 
@@ -77,8 +78,8 @@ class BlogController extends Controller
 
         $this->blogApi->postDelete(
             new PostDeleteRequest(
-                $request->getHeaders()['Authorization'] ?? '',
-                $body['postUid'] ?? '',
+                $this->tokenFromRequestExtractor->extract($request),
+                (string) ($body['postUid'] ?? ''),
             )
         );
 

@@ -2,7 +2,7 @@
 
 namespace App\Shared\User\Domain\Repository;
 
-use App\Shared\User\Domain\User;
+use App\Shared\User\Domain\Entity\User;
 
 interface UserRepositoryInterface
 {

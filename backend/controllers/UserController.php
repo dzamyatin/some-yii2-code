@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use App\Shared\User\Ui\Request\TokenProduceRequest;
 use App\Shared\User\Ui\Request\TokenRefreshRequest;
+use App\Shared\User\Ui\Request\UserRegisterRequest;
 use App\Shared\User\Ui\UserApi;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use yii\web\Controller;
@@ -19,6 +20,7 @@ class UserController extends Controller
         $module,
         private UserApi $userApi,
         private NormalizerInterface $normalizer,
+        private TokenFromRequestExtractor $tokenFromRequestExtractor,
         $config = []
     ) {
         parent::__construct($id, $module, $config);
@@ -28,12 +30,10 @@ class UserController extends Controller
     {
         $body = json_decode($request->getRawBody(), true);
 
-        $this->normalizer->normalize(
-            $this->userApi->tokenProduce(
-                new TokenProduceRequest(
-                    (string) ($body['login'] ?? ''),
-                    (string) ($body['password'] ?? ''),
-                )
+        $this->userApi->userRegister(
+            new UserRegisterRequest(
+                (string) ($body['login'] ?? ''),
+                (string) ($body['password'] ?? ''),
             )
         );
 
@@ -56,14 +56,11 @@ class UserController extends Controller
 
     public function actionRefresh(Request $request): Response
     {
-        $matches = [];
-        preg_match('/Bearer (.+)/', $request->getHeaders()['Authorization'] ?? '', $matches);
-
         return $this->asJson(
             $this->normalizer->normalize(
                 $this->userApi->tokenRefresh(
                     new TokenRefreshRequest(
-                        (string) ($matches[1] ?? '')
+                        $this->tokenFromRequestExtractor->extract($request)
                     )
                 )
             )

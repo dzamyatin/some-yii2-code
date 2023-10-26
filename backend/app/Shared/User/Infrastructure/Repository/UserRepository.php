@@ -3,7 +3,7 @@
 namespace App\Shared\User\Infrastructure\Repository;
 
 use App\Shared\User\Domain\Repository\UserRepositoryInterface;
-use App\Shared\User\Domain\User;
+use App\Shared\User\Domain\Entity\User;
 
 class UserRepository implements UserRepositoryInterface
 {

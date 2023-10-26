@@ -7,6 +7,8 @@ use App\Blog\Application\Query\PostsShow;
 use App\Blog\Domain\Repository\PostRepositoryInterface;
 use App\Blog\Infrastructure\Repository\PostRepository;
 use App\Blog\Ui\BlogApi;
+use app\controllers\ApiErrorHandler;
+use app\controllers\TokenFromRequestExtractor;
 use App\Shared\Doc\OpenApiService;
 use App\Shared\User\Application\Command\UserRegister;
 use App\Shared\User\Application\Query\UserTokenProduce;
@@ -54,6 +56,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
+            'class' => ApiErrorHandler::class,
             'errorAction' => 'site/error',
         ],
         'mailer' => [
@@ -90,9 +93,11 @@ $config = [
     'params' => $params,
     'container' => [
         'singletons' => [
+            TokenFromRequestExtractor::class => TokenFromRequestExtractor::class,
             OpenApiService::class => static fn() =>  new OpenApiService(
                 [
-                    __DIR__ . '/../app/Blog/Ui'
+                    __DIR__ . '/../app/Blog/Ui',
+                    __DIR__ . '/../app/Shared/User/Ui',
                 ]
             ),
 

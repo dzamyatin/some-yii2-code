@@ -38,12 +38,13 @@ final class PostUpdate
             throw new PostUpdateException('Wrong post owner');
         }
 
-        $this->postRepository->createPost(
+        $this->postRepository->updatePost(
             new Post(
                 $postUpdateCommand->getPostUid(),
                 $token->userUid,
                 $postUpdateCommand->getHeader(),
-                $postUpdateCommand->getText()
+                $postUpdateCommand->getText(),
+                time(),
             )
         );
     }

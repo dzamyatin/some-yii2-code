@@ -6,6 +6,7 @@ namespace App\Shared\User\Ui;
 use App\Shared\Common\Ui\Response\BadRequestResponseException;
 use App\Shared\User\Application\Command\UserRegister;
 use App\Shared\User\Application\Command\UserRegisterCommand;
+use App\Shared\User\Application\Command\UserRegisterException;
 use App\Shared\User\Application\Query\UserTokenProduce;
 use App\Shared\User\Application\Query\UserTokenProduceException;
 use App\Shared\User\Application\Query\UserTokenProduceQuery;
@@ -52,12 +53,16 @@ final class UserApi
     ]
     public function userRegister(UserRegisterRequest $request): void
     {
-        $this->userRegister->__invoke(
-            new UserRegisterCommand(
-                $request->login,
-                $request->password,
-            )
-        );
+        try {
+            $this->userRegister->__invoke(
+                new UserRegisterCommand(
+                    $request->login,
+                    $request->password,
+                )
+            );
+        } catch (UserRegisterException $exception) {
+            throw new BadRequestResponseException($exception->getMessage(), $exception);
+        }
     }
 
     #[

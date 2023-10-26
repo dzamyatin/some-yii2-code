@@ -142,7 +142,8 @@ $config = [
             ),
             UserRegister::class => static fn() => new UserRegister(
                 Yii::$container->get(UserRepositoryInterface::class),
-                Yii::$container->get(UuidRepositoryInterface::class)
+                Yii::$container->get(UuidRepositoryInterface::class),
+                Yii::$container->get(PasswordRepositoryInterface::class),
             ),
             UserTokenProduce::class => static fn() => new UserTokenProduce(
                 Yii::$container->get(UserRepositoryInterface::class),

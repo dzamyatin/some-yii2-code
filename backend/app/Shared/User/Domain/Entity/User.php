@@ -21,7 +21,7 @@ final class User
         return $this->login;
     }
 
-    public function getPassword(): string
+    public function getEncodedPassword(): string
     {
         return $this->encodedPassword;
     }

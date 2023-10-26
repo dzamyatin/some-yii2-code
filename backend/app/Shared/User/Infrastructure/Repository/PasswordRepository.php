@@ -8,6 +8,11 @@ class PasswordRepository implements PasswordRepositoryInterface
 {
     public function encode(string $rawPassword): string
     {
-        return '';
+        return password_hash($rawPassword, PASSWORD_BCRYPT);
+    }
+
+    public function check(string $rawPassword, string $encodedPassword): bool
+    {
+        return password_verify($rawPassword, $encodedPassword);
     }
 }

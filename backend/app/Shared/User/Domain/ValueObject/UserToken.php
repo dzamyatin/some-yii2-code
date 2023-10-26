@@ -7,5 +7,6 @@ final class UserToken
 {
     public function __construct(
         public readonly string $userUid,
+        public readonly ?string $refreshToken = null
     ) {}
 }

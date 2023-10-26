@@ -29,7 +29,8 @@ final class PostCreate
                 $this->uuidRepository->create(),
                 $token->userUid,
                 $postCreateCommand->getHeader(),
-                $postCreateCommand->getText()
+                $postCreateCommand->getText(),
+                time(),
             )
         );
     }

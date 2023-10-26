@@ -9,38 +9,32 @@ final class Post
         private string $uid,
         private string $userUid,
         private string $header,
-        private string $text
+        private string $text,
+        private int $createdAt,
     ) {}
 
-    /**
-     * @return string
-     */
     public function getUid(): string
     {
         return $this->uid;
     }
 
-    /**
-     * @return string
-     */
     public function getUserUid(): string
     {
         return $this->userUid;
     }
 
-    /**
-     * @return string
-     */
     public function getHeader(): string
     {
         return $this->header;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
+    }
+
+    public function getCreatedAt(): int
+    {
+        return $this->createdAt;
     }
 }

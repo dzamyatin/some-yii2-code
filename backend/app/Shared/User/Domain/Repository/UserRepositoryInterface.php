@@ -10,5 +10,5 @@ interface UserRepositoryInterface
 
     public function getUserByUid(string $uid): ?User;
 
-    public function createUser(User $user): User;
+    public function createUser(User $user): void;
 }

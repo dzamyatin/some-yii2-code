@@ -5,7 +5,6 @@ namespace App\Shared\User\Application\Query;
 
 use App\Shared\User\Domain\Repository\UserRepositoryInterface;
 use App\Shared\User\Domain\Repository\UserTokenRepositoryInterface;
-use App\Shared\User\ValueObject\UserToken;
 use App\Shared\User\Domain\Repository\UserTokenRepositoryException;
 
 final class UserTokenRefresh

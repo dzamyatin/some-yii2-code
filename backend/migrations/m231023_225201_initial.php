@@ -11,11 +11,12 @@ class m231023_225201_initial extends Migration
     {
         $this->getDb()->createCommand(
             <<<SQL
-                CREATE TABLE blog (
+                CREATE TABLE blog_post (
                     uid VARCHAR(255) not null primary key,
                     userUid VARCHAR(255) not null,
                     header VARCHAR(255) not null,
-                    text TEXT not null
+                    text TEXT not null,
+                    createdAt TIMESTAMP not null
                 );
 
                 CREATE TABLE user (
@@ -23,6 +24,8 @@ class m231023_225201_initial extends Migration
                     login VARCHAR(255) not null,
                     password VARCHAR(255) not null
                 );
+
+                CREATE INDEX blog_post_createdAt ON blog_post (createdAt DESC);
             SQL
         )->execute();
     }
@@ -34,7 +37,7 @@ class m231023_225201_initial extends Migration
     {
         $this->getDb()->createCommand(
             <<<SQL
-                DROP TABLE blog;
+                DROP TABLE blog_post;
 
                 DROP TABLE user;
             SQL

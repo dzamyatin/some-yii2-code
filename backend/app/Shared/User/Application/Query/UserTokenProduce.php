@@ -24,7 +24,7 @@ final class UserTokenProduce
 
         if (
             is_null($user) ||
-            $this->passwordRepository->encode($produceQuery->password) !== $user->getPassword()
+            !$this->passwordRepository->check($produceQuery->password, $user->getEncodedPassword())
         ) {
             throw new UserTokenProduceException('There is no such user or the password is incorrect');
         }

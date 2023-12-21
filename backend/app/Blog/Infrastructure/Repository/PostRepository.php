@@ -12,7 +12,7 @@ class PostRepository implements PostRepositoryInterface
     public function getPosts(PostRequest $postRequest): array
     {
         return array_map(
-            fn(array $row) => $this->denarmalizePost($row),
+            fn(array $row) => $this->denormalizePost($row),
             $this->getPostQuery()
                 ->offset($postRequest->offset)
                 ->limit($postRequest->limit)
@@ -60,7 +60,7 @@ class PostRepository implements PostRepositoryInterface
             return null;
         }
 
-        return $this->denarmalizePost($raw);
+        return $this->denormalizePost($raw);
     }
 
     private function getPostQuery(): Query
@@ -70,7 +70,7 @@ class PostRepository implements PostRepositoryInterface
             ->from('blog_post');
     }
 
-    private function denarmalizePost(array $raw): Post
+    private function denormalizePost(array $raw): Post
     {
         return new Post(
             (string) $raw['uid'],

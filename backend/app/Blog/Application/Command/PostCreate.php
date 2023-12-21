@@ -22,6 +22,7 @@ final class PostCreate
      */
     public function __invoke(PostCreateCommand $postCreateCommand)
     {
+        //@TODO put token logic to different layer (middleware before controller?) here you should operate only with UserEntity
         $token = $this->tokenRepository->decodeToken($postCreateCommand->getUserToken());
 
         $this->postRepository->createPost(
